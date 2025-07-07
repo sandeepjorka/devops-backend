@@ -35,3 +35,4 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEVOPS_FRONTEND_12146 }}"
           channelId: live
           projectId: devops-frontend-12146
+          entryPoint: frontend  # ✅ This fixes the firebase.json not found error
