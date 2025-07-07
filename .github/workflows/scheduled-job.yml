@@ -13,3 +13,9 @@ jobs:
       - name: 🔔 Call /users endpoint
         run: |
           curl -s https://sy2wqvdvwe.us-east-1.awsapprunner.com/users
+      - name: 📣 Send Slack message
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\":\"✅ Scheduled Job Ran at $(date '+%Y-%m-%d %H:%M:%S')\"}" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
