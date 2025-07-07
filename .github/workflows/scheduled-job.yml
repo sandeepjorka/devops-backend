@@ -1,21 +1,24 @@
-name: Scheduled Job - Call Backend API
+name: Scheduled Job - Call Backend API and Notify Slack
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # ⏱ Every 5 minutes (UTC)
-  workflow_dispatch:       # 🔘 Allow manual trigger from GitHub UI
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:
 
 jobs:
-  ping_backend:
+  ping_and_notify:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔔 Call /users endpoint
+      - name: 🔁 Call /users endpoint
+        id: call_api
         run: |
-          curl -s https://sy2wqvdvwe.us-east-1.awsapprunner.com/users
+          RESPONSE=$(curl -s https://sy2wqvdvwe.us-east-1.awsapprunner.com/users)
+          echo "Fetched users: $RESPONSE"
+          echo "response=$RESPONSE" >> $GITHUB_OUTPUT
+
       - name: 📣 Send Slack message
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data "{\"text\":\"✅ Scheduled Job Ran at $(date '+%Y-%m-%d %H:%M:%S')\"}" \
+          --data "{\"text\":\"✅ Scheduled Job Ran at $(date '+%Y-%m-%d %H:%M:%S')\nResponse: ${{ steps.call_api.outputs.response }}\"}" \
           ${{ secrets.SLACK_WEBHOOK_URL }}
-
