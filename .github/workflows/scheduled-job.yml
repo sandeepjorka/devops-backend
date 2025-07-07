@@ -1,9 +1,9 @@
 name: Scheduled Job - Call Backend API and Notify Slack
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes
-  workflow_dispatch:
+#  schedule:
+#    - cron: '*/5 * * * *'  # Every 5 minutes
+#  workflow_dispatch:
 
 jobs:
   ping_and_notify:
